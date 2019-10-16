@@ -10,6 +10,7 @@ import aplikasi.config.ValueFormatter;
 import aplikasi.controller.TableViewController;
 import aplikasi.entity.Aset;
 import aplikasi.entity.KategoriAset;
+import aplikasi.entity.Kepemilikan;
 import aplikasi.entity.Peminjaman;
 import aplikasi.entity.PeminjamanDetail;
 import aplikasi.entity.Pengembalian;
@@ -209,17 +210,17 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
 
         tableViewDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Kode", "Nama Aset", "Kategori", "Jumlah"
+                "Kode", "Nama Aset", "Kategori", "Kepemilikan", "Jumlah", "Diinput"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -228,12 +229,14 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(tableViewDetail);
         if (tableViewDetail.getColumnModel().getColumnCount() > 0) {
-            tableViewDetail.getColumnModel().getColumn(0).setPreferredWidth(110);
-            tableViewDetail.getColumnModel().getColumn(0).setMaxWidth(110);
-            tableViewDetail.getColumnModel().getColumn(2).setPreferredWidth(150);
-            tableViewDetail.getColumnModel().getColumn(2).setMaxWidth(150);
-            tableViewDetail.getColumnModel().getColumn(3).setPreferredWidth(150);
-            tableViewDetail.getColumnModel().getColumn(3).setMaxWidth(150);
+            tableViewDetail.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tableViewDetail.getColumnModel().getColumn(0).setMaxWidth(100);
+            tableViewDetail.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tableViewDetail.getColumnModel().getColumn(2).setMaxWidth(100);
+            tableViewDetail.getColumnModel().getColumn(4).setPreferredWidth(50);
+            tableViewDetail.getColumnModel().getColumn(4).setMaxWidth(50);
+            tableViewDetail.getColumnModel().getColumn(5).setPreferredWidth(65);
+            tableViewDetail.getColumnModel().getColumn(5).setMaxWidth(65);
         }
 
         jLabel3.setText("Pembawa");
@@ -372,7 +375,9 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(LaporanAset.class.getName()).log(Level.SEVERE, null, ex);
         }
+        tableController.setContentTableAlignment(Arrays.asList(0, 1, 2));
         clearField();
+
     }
 
     public void refreshDataTablesPengembalian() {
@@ -413,6 +418,7 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(ApprovalTransaksi.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     private void setFields(Peminjaman pinjam) {
@@ -422,12 +428,16 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
             for (PeminjamanDetail detailPinjam : daftarPeminjamanDetail) {
                 Aset aset = detailPinjam.getAset();
                 KategoriAset kategori = aset.getKategoriAset();
+                Kepemilikan kepemilikan = aset.getKepemilikan();
                 Object[] row = {
                     //                    detailPinjam.getId(),
                     aset.getKode(),
                     aset.getNama(),
                     kategori.getNama_kategori(),
-                    detailPinjam.getQty()
+                    kepemilikan.getNama(),
+                    detailPinjam.getQty(),
+                    detailPinjam.getPeminjaman().getUser().getUsername()
+
                 };
                 tableControllerDetail.getModel().addRow(row);
             }
@@ -444,10 +454,11 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
                 txtOpen.setText("CLOSE");
                 txtOpen.setForeground(Color.black);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ApprovalTransaksi.class.getName()).log(Level.SEVERE, null, ex);
         }
+        tableControllerDetail.setContentTableAlignment(Arrays.asList(0, 2, 3, 4, 5));
     }
     private void tableViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableViewMouseClicked
         if (tableController.isSelected()) {
@@ -543,16 +554,18 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
             }
     }//GEN-LAST:event_pmnuTolakActionPerformed
     }
-    private void btnApprovalEnable(){
-            btnTerima.setEnabled(true);
-            btnTolak.setEnabled(true);
+
+    private void btnApprovalEnable() {
+        btnTerima.setEnabled(true);
+        btnTolak.setEnabled(true);
     }
-    private void btnApprovalDisable(){
-            btnTerima.setEnabled(false);
-            btnTolak.setEnabled(false);
+
+    private void btnApprovalDisable() {
+        btnTerima.setEnabled(false);
+        btnTolak.setEnabled(false);
     }
     private void txtApprovalCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtApprovalCaretUpdate
-     if (txtApproval.getText().isEmpty()) {
+        if (txtApproval.getText().isEmpty()) {
             btnApprovalEnable();
         } else {
             btnApprovalDisable();
