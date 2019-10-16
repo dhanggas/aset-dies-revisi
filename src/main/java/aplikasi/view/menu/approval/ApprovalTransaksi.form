@@ -8,13 +8,21 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="pmnuHapus">
+        <MenuItem class="javax.swing.JMenuItem" name="pmnuApproval">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Hapus Data"/>
+            <Property name="text" type="java.lang.String" value="Setujui Transaksi"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pmnuHapusMouseClicked"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pmnuHapusActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pmnuApprovalActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="pmnuTolak">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Tolak Transaksi"/>
+            <Property name="actionCommand" type="java.lang.String" value="Tolak Transaksi"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pmnuTolakActionPerformed"/>
           </Events>
         </MenuItem>
       </SubComponents>
@@ -28,7 +36,7 @@
         </MatteColorBorder>
       </Border>
     </Property>
-    <Property name="title" type="java.lang.String" value="Approval Transaksi"/>
+    <Property name="title" type="java.lang.String" value="Approval Transaksi Peminjaman"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -43,7 +51,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-88,0,0,3,35"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-88,0,0,3,-27"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -168,7 +176,7 @@
                         <Column editable="false" title="Approval" type="java.lang.Object"/>
                       </Table>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="Klik kanan untuk memunculkan menu"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -218,8 +226,11 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane2" pref="457" max="32767" attributes="0"/>
-                  <Component id="jPanel9" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jScrollPane2" pref="649" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="jPanel9" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -227,7 +238,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" pref="238" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="234" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -295,14 +306,23 @@
                               <Component id="txtUser" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblKet" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblOpen" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lblOpen" max="32767" attributes="0"/>
+                              <Component id="lblKet" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="txtKet" min="-2" pref="211" max="-2" attributes="0"/>
-                              <Component id="txtOpen" min="-2" pref="67" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="txtOpen" min="-2" pref="67" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txtApproval" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btnTerima" max="32767" attributes="0"/>
+                              <Component id="btnTolak" min="-2" pref="90" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -310,9 +330,14 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
+                                  <Component id="btnTerima" min="-2" pref="31" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnTolak" pref="31" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="txtPembawa" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                       <Component id="jLabel3" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -322,16 +347,18 @@
                                       <Component id="txtUser" pref="28" max="32767" attributes="0"/>
                                       <Component id="jLabel4" max="32767" attributes="0"/>
                                   </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="txtKet" pref="30" max="32767" attributes="0"/>
                                       <Component id="lblKet" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtOpen" max="32767" attributes="0"/>
                                       <Component id="lblOpen" max="32767" attributes="0"/>
+                                      <Component id="txtOpen" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtApproval" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -380,6 +407,38 @@
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtApproval">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Tahoma" size="12" style="1"/>
+                    </Property>
+                    <Property name="horizontalAlignment" type="int" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="txtApprovalCaretUpdate"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnTolak">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Tolak"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="focusPainted" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTolakActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnTerima">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Terima"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="focusPainted" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTerimaActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

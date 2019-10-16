@@ -368,10 +368,13 @@ public final class LaporanPeminjaman extends javax.swing.JInternalFrame {
     }
 
     private void refreshDataPeminjaman(Date tglAwal, Date tglAkhir) {
-
         try {
+            String kategori = txtKategori.getSelectedItem().toString();
+            String kepemilikan = txtKepemilikan.getSelectedItem().toString();
+            
             tableController.clearData();
-            daftarPeminjamanDetail = repoPeminjaman.findPeminjamanByTglBetween(tglAwal, tglAkhir);
+//            daftarPeminjamanDetail = repoPeminjaman.findPeminjamanByTglBetween(tglAwal, tglAkhir);
+            daftarPeminjamanDetail = repoPeminjaman.findPeminjamanByTglBetweenByKategoriByKepemilikan(tglAwal, tglAkhir, kategori, kepemilikan);
             if (daftarPeminjamanDetail.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tidak ada transaksi !", getTitle(), JOptionPane.INFORMATION_MESSAGE);
             }

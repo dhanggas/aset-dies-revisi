@@ -21,6 +21,8 @@ public interface RepoPengembalian extends BaseRepository<Pengembalian, Integer>{
     public List<PengembalianDetail> findPengembalianDetailByPengembalianId(Integer idPengembalian) throws SQLException;
 
     public List<PengembalianDetail> findPengembalianDetailBetweenTanggal(Date awal, Date akhir) throws SQLException;
+    
+    public List<PengembalianDetail> findPengembalianDetailBetweenTanggalByKategoriByKepemilikan(Date awal, Date akhir, String kategori, String kepemilikan) throws SQLException;
 
     public List<PengembalianDetail> findPengembalianDetailByTanggalLowerThen(Date tanggal) throws SQLException;
     

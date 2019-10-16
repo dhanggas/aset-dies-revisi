@@ -228,7 +228,7 @@ public class MainMenuView extends javax.swing.JFrame {
         jToolBar1.setRollover(true);
         jToolBar1.setPreferredSize(new java.awt.Dimension(209, 328));
 
-        btnUsers.setText("User");
+        btnUsers.setText("User / Pengguna");
         btnUsers.setToolTipText("Tambah data user baru");
         btnUsers.setEnabled(false);
         btnUsers.setFocusable(false);
@@ -365,8 +365,8 @@ public class MainMenuView extends javax.swing.JFrame {
         jToolBar1.add(jSeparator6);
 
         btnPersetujuanTransaksi.setForeground(new java.awt.Color(0, 2, 255));
-        btnPersetujuanTransaksi.setText("Approval Transaksi ");
-        btnPersetujuanTransaksi.setToolTipText("Buka transaksi pengembalian aset");
+        btnPersetujuanTransaksi.setText("Approval Transaksi");
+        btnPersetujuanTransaksi.setToolTipText("");
         btnPersetujuanTransaksi.setEnabled(false);
         btnPersetujuanTransaksi.setFocusable(false);
         btnPersetujuanTransaksi.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

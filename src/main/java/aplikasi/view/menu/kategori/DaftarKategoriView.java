@@ -59,11 +59,9 @@ public class DaftarKategoriView extends javax.swing.JInternalFrame {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         pmnuUbah = new javax.swing.JMenuItem();
-        pmnuHapus = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         pmnuTambah = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
-        btnHapus = new javax.swing.JButton();
         btnUbah = new javax.swing.JButton();
         btnTambah = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -86,14 +84,6 @@ public class DaftarKategoriView extends javax.swing.JInternalFrame {
             }
         });
         jPopupMenu1.add(pmnuUbah);
-
-        pmnuHapus.setText("Hapus");
-        pmnuHapus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pmnuHapusActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(pmnuHapus);
         jPopupMenu1.add(jSeparator1);
 
         pmnuTambah.setText("Tambah");
@@ -111,21 +101,6 @@ public class DaftarKategoriView extends javax.swing.JInternalFrame {
 
         jToolBar1.setRollover(true);
         jToolBar1.setPreferredSize(new java.awt.Dimension(100, 45));
-
-        btnHapus.setText("Hapus");
-        btnHapus.setToolTipText("Hapus data khusus untuk yang belum ada kaitan dengan tabel lain");
-        btnHapus.setFocusable(false);
-        btnHapus.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnHapus.setMaximumSize(new java.awt.Dimension(120, 35));
-        btnHapus.setMinimumSize(new java.awt.Dimension(120, 35));
-        btnHapus.setPreferredSize(new java.awt.Dimension(120, 35));
-        btnHapus.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnHapus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHapusActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnHapus);
 
         btnUbah.setText("Ubah");
         btnUbah.setToolTipText("Ubah data yang dipilih");
@@ -326,25 +301,6 @@ public class DaftarKategoriView extends javax.swing.JInternalFrame {
             Logger.getLogger(DaftarStatusView.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        if (tableController.isSelected()) {
-            KategoriAset kategoriAset = daftarKategori.get(tableController.getRowSelected());
-            int jawab = JOptionPane.showOptionDialog(this, "Ingin Menghaspus data dengan kode " + kategoriAset.getKode() + " ?", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (jawab == JOptionPane.YES_OPTION) {
-                try {
-                    repo.delete(kategoriAset.getId_kategori());
-                    refreshDataTableByName();
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(this, "Tidak dapat menghapus data kategori", getTitle(), JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(DaftarKategoriView.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Data kategori aset belum dipilih!", getTitle(), JOptionPane.WARNING_MESSAGE);
-
-        }
-    }//GEN-LAST:event_btnHapusActionPerformed
-
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         if (tableController.isSelected()) {
             KategoriAset kategoriAset = daftarKategori.get(tableController.getRowSelected());
@@ -381,10 +337,6 @@ public class DaftarKategoriView extends javax.swing.JInternalFrame {
         btnUbahActionPerformed(evt);
     }//GEN-LAST:event_pmnuUbahActionPerformed
 
-    private void pmnuHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmnuHapusActionPerformed
-        btnHapusActionPerformed(evt);
-    }//GEN-LAST:event_pmnuHapusActionPerformed
-
     private void pmnuTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmnuTambahActionPerformed
         btnTambahActionPerformed(evt);
     }//GEN-LAST:event_pmnuTambahActionPerformed
@@ -416,7 +368,6 @@ public class DaftarKategoriView extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;
     private javax.swing.JLabel jLabel12;
@@ -429,7 +380,6 @@ public class DaftarKategoriView extends javax.swing.JInternalFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblCari;
-    private javax.swing.JMenuItem pmnuHapus;
     private javax.swing.JMenuItem pmnuTambah;
     private javax.swing.JMenuItem pmnuUbah;
     private javax.swing.JTable tableView;

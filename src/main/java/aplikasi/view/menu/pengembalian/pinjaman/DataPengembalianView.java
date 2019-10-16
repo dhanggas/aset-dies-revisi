@@ -97,6 +97,7 @@ public class DataPengembalianView extends javax.swing.JInternalFrame {
             txtIdPeminjaman.setText(pinjam.getId().toString());
             txtPembawa.setText(pinjam.getPembawa());
             txtTanggalPP.setText(ValueFormatter.getLocalDateLong(pinjam.getTanggal().toLocalDate()));
+            txtKetPP.setText(pinjam.getKet());
 
             daftarPengembalianDeatil.clear();
             List<PeminjamanDetail> daftarAset = repoPeminjaman.findPeminjamanDetailByPeminjamanKode(pinjam.getKode());
@@ -143,6 +144,8 @@ public class DataPengembalianView extends javax.swing.JInternalFrame {
         txtTanggalPP = new javax.swing.JTextField();
         btnCari = new javax.swing.JButton();
         txtKodePP = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtKetPP = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jToolBar2 = new javax.swing.JToolBar();
         btnHapusAset = new javax.swing.JButton();
@@ -247,21 +250,28 @@ public class DataPengembalianView extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel9.setText("Ket");
+
+        txtKetPP.setEditable(false);
+        txtKetPP.setFocusable(false);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtPembawa, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                     .addComponent(txtTanggalPP)
-                    .addComponent(txtKodePP, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
+                    .addComponent(txtKodePP, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                    .addComponent(txtKetPP))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -281,7 +291,10 @@ public class DataPengembalianView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTanggalPP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtKetPP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Daftar Pengembalian"));
@@ -394,8 +407,6 @@ public class DataPengembalianView extends javax.swing.JInternalFrame {
                 txtKetActionPerformed(evt);
             }
         });
-
-        jLabel8.setText("Status");
 
         cboOpen.setSelected(true);
         cboOpen.setText("Close Status Peminjaman");
@@ -599,6 +610,7 @@ public class DataPengembalianView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -612,6 +624,7 @@ public class DataPengembalianView extends javax.swing.JInternalFrame {
     private javax.swing.JTable tableView;
     private javax.swing.JTextField txtIdPeminjaman;
     private javax.swing.JTextField txtKet;
+    private javax.swing.JTextField txtKetPP;
     private javax.swing.JTextField txtKode;
     private javax.swing.JTextField txtKodePP;
     private javax.swing.JTextField txtPembawa;

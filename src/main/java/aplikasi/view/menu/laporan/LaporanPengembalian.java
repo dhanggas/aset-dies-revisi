@@ -8,11 +8,18 @@ package aplikasi.view.menu.laporan;
 import aplikasi.config.KoneksiDB;
 import aplikasi.config.ValueFormatter;
 import aplikasi.controller.TableViewController;
+import aplikasi.entity.KategoriAset;
+import aplikasi.entity.Kepemilikan;
 import aplikasi.entity.PengembalianDetail;
 import aplikasi.entity.Users;
+import aplikasi.repository.RepoKategoriAset;
+import aplikasi.repository.RepoKepemilikan;
 import aplikasi.repository.RepoPengembalian;
+import aplikasi.service.ServiceKategoriAset;
+import aplikasi.service.ServiceKepemilikan;
 import aplikasi.service.ServicePengembalian;
 import aplikasi.view.MainMenuView;
+import aplikasi.view.menu.aset.DataAsetView;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -41,6 +48,11 @@ public final class LaporanPengembalian extends javax.swing.JInternalFrame {
     private Users p;
 
     private final RepoPengembalian repoPengembalian = new ServicePengembalian(KoneksiDB.getDataSource());
+    private final RepoKategoriAset repoKategori = new ServiceKategoriAset(KoneksiDB.getDataSource());
+    private final RepoKepemilikan repoKepemilikan = new ServiceKepemilikan(KoneksiDB.getDataSource());
+
+    private List<KategoriAset> daftarKategori = new ArrayList<>();
+    private List<Kepemilikan> daftarKepemilikan = new ArrayList<>();
     private List<PengembalianDetail> daftarPengembalianDetail = new ArrayList<>();
 
     /**
@@ -53,9 +65,11 @@ public final class LaporanPengembalian extends javax.swing.JInternalFrame {
         initComponents();
         this.tableController = new TableViewController(tableView);
         this.p = p;
-
+        hideFilter();
         txtTanggalAwal.setDate(new java.util.Date());
         txtTanggalAkhir.setDate(new java.util.Date());
+        refresDataKategoriAset();
+        refresDataKepemilikan();
     }
 
     /**
@@ -74,6 +88,12 @@ public final class LaporanPengembalian extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         txtTanggalAkhir = new com.toedter.calendar.JDateChooser();
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnFilter = new javax.swing.JButton();
+        lblKategori = new javax.swing.JLabel();
+        txtKategori = new javax.swing.JComboBox<String>();
+        lblKepemilikan = new javax.swing.JLabel();
+        txtKepemilikan = new javax.swing.JComboBox<String>();
+        jLabel3 = new javax.swing.JLabel();
         btnProses = new javax.swing.JButton();
         btnCetak = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -111,6 +131,68 @@ public final class LaporanPengembalian extends javax.swing.JInternalFrame {
         jSeparator1.setPreferredSize(new java.awt.Dimension(5, 5));
         jSeparator1.setSeparatorSize(new java.awt.Dimension(5, 5));
         jToolBar1.add(jSeparator1);
+
+        btnFilter.setText(">>");
+        btnFilter.setFocusable(false);
+        btnFilter.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnFilter.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnFilter);
+
+        lblKategori.setText(" Kategori : ");
+        jToolBar1.add(lblKategori);
+
+        txtKategori.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtKategori.setToolTipText("");
+        txtKategori.setMaximumSize(new java.awt.Dimension(125, 29));
+        txtKategori.setMinimumSize(new java.awt.Dimension(125, 29));
+        txtKategori.setPreferredSize(new java.awt.Dimension(125, 29));
+        txtKategori.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                txtKategoriItemStateChanged(evt);
+            }
+        });
+        txtKategori.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtKategoriMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                txtKategoriMouseReleased(evt);
+            }
+        });
+        txtKategori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtKategoriActionPerformed(evt);
+            }
+        });
+        txtKategori.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtKategoriKeyPressed(evt);
+            }
+        });
+        jToolBar1.add(txtKategori);
+
+        lblKepemilikan.setText(" Kepemilikan : ");
+        jToolBar1.add(lblKepemilikan);
+
+        txtKepemilikan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtKepemilikan.setToolTipText("");
+        txtKepemilikan.setMaximumSize(new java.awt.Dimension(180, 29));
+        txtKepemilikan.setMinimumSize(new java.awt.Dimension(180, 29));
+        txtKepemilikan.setPreferredSize(new java.awt.Dimension(180, 29));
+        txtKepemilikan.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                txtKepemilikanItemStateChanged(evt);
+            }
+        });
+        jToolBar1.add(txtKepemilikan);
+
+        jLabel3.setText("  ");
+        jToolBar1.add(jLabel3);
 
         btnProses.setText("Proses");
         btnProses.setFocusable(false);
@@ -177,7 +259,7 @@ public final class LaporanPengembalian extends javax.swing.JInternalFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 986, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,9 +287,9 @@ public final class LaporanPengembalian extends javax.swing.JInternalFrame {
                 map.put("pengguna", p.getNama());
                 map.put("jabatan", p.getJabatan().toString());
                 JasperPrint print = JasperFillManager.fillReport(
-                    getClass().getResourceAsStream(url),
-                    map,
-                    new JRBeanCollectionDataSource(daftarPengembalianDetail));
+                        getClass().getResourceAsStream(url),
+                        map,
+                        new JRBeanCollectionDataSource(daftarPengembalianDetail));
                 JasperViewer view = new JasperViewer(print, false);
                 view.setLocationRelativeTo(null);
                 view.setExtendedState(JasperViewer.MAXIMIZED_BOTH);
@@ -219,13 +301,89 @@ public final class LaporanPengembalian extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Data belum diproses", getTitle(), JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnCetakActionPerformed
+
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        if (btnFilter.getText().equals(">>")) {
+            btnFilter.setText("<<");
+            showFilter();
+        } else {
+            btnFilter.setText(">>");
+            txtKategori.setSelectedIndex(0);
+            txtKepemilikan.setSelectedIndex(0);
+            hideFilter();
+        }
+    }//GEN-LAST:event_btnFilterActionPerformed
+    private void hideFilter() {
+        lblKategori.setVisible(false);
+        txtKategori.setVisible(false);
+        lblKepemilikan.setVisible(false);
+        txtKepemilikan.setVisible(false);
+    }
+
+    private void showFilter() {
+        lblKategori.setVisible(true);
+        txtKategori.setVisible(true);
+        lblKepemilikan.setVisible(true);
+        txtKepemilikan.setVisible(true);
+    }
+    private void refresDataKategoriAset() {
+        try {
+            txtKategori.removeAllItems();
+            txtKategori.addItem("%");
+            daftarKategori = repoKategori.findAll();
+            for (KategoriAset ka : daftarKategori) {
+                txtKategori.addItem(ka.getNama_kategori());
+            }
+            txtKategori.setSelectedItem("%");
+        } catch (SQLException ex) {
+            Logger.getLogger(LaporanPeminjaman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void refresDataKepemilikan() {
+        try {
+            txtKepemilikan.removeAllItems();
+            txtKepemilikan.addItem("%");
+            daftarKepemilikan = repoKepemilikan.findAll();
+            for (Kepemilikan ds : daftarKepemilikan) {
+                txtKepemilikan.addItem(ds.getNama());
+            }
+            txtKepemilikan.setSelectedItem("%");
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAsetView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void txtKategoriItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtKategoriItemStateChanged
+        //        refreshDataTablesWithFilter();
+    }//GEN-LAST:event_txtKategoriItemStateChanged
+
+    private void txtKategoriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtKategoriMouseClicked
+
+    }//GEN-LAST:event_txtKategoriMouseClicked
+
+    private void txtKategoriMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtKategoriMouseReleased
+
+    }//GEN-LAST:event_txtKategoriMouseReleased
+
+    private void txtKategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKategoriActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtKategoriActionPerformed
+
+    private void txtKategoriKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKategoriKeyPressed
+
+    }//GEN-LAST:event_txtKategoriKeyPressed
+
+    private void txtKepemilikanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtKepemilikanItemStateChanged
+        //        refreshDataTablesWithFilter();
+    }//GEN-LAST:event_txtKepemilikanItemStateChanged
     public void refreshDataTables() {
         try {
             tableController.clearData();
             this.daftarPengembalianDetail = repoPengembalian.findPengembalianDetailBetweenTanggal(Date.valueOf(LocalDate.of(1990, 1, 1)), Date.valueOf(LocalDate.now()));
             for (PengembalianDetail pd : daftarPengembalianDetail) {
                 Object[] row = {pd.getPengembalian().getKode(), pd.getAset().getNama(), pd.getAset().getKategoriAset().getNama_kategori(),
-                    pd.getQty(),ValueFormatter.getLocalDateShort(pd.getPengembalian().getTanggal().toLocalDate()), pd.getAset().getKepemilikan().getNama(),
+                    pd.getQty(), ValueFormatter.getLocalDateShort(pd.getPengembalian().getTanggal().toLocalDate()), pd.getAset().getKepemilikan().getNama(),
                     pd.getPengembalian().getUser().getUsername()};
                 tableController.getModel().addRow(row);
             }
@@ -233,14 +391,20 @@ public final class LaporanPengembalian extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(LaporanAset.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    private void refreshDataPengembalian(Date tglAwal, Date tglAkhir) {
+    }
 
+    private void refreshDataPengembalian(Date tglAwal, Date tglAkhir) {
         try {
+            String kategori = txtKategori.getSelectedItem().toString();
+            String kepemilikan = txtKepemilikan.getSelectedItem().toString();
+            
             tableController.clearData();
-            daftarPengembalianDetail = repoPengembalian.findPengembalianDetailBetweenTanggal(tglAwal, tglAkhir);
+//            daftarPengembalianDetail = repoPengembalian.findPengembalianDetailBetweenTanggal(tglAwal, tglAkhir);
+            daftarPengembalianDetail = repoPengembalian.findPengembalianDetailBetweenTanggalByKategoriByKepemilikan(tglAwal, tglAkhir, kategori, kepemilikan);
+            
             if (daftarPengembalianDetail.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Tidak ada transaksi !", getTitle(), JOptionPane.INFORMATION_MESSAGE);
-            } 
+                JOptionPane.showMessageDialog(this, "Tidak ada transaksi !", getTitle(), JOptionPane.INFORMATION_MESSAGE);
+            }
             btnCetak.setEnabled(!daftarPengembalianDetail.isEmpty());
             for (PengembalianDetail pd : daftarPengembalianDetail) {
                 Object[] row = {pd.getPengembalian().getKode(), pd.getAset().getNama(),
@@ -259,15 +423,21 @@ public final class LaporanPengembalian extends javax.swing.JInternalFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCetak;
+    private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnProses;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel lblKategori;
+    private javax.swing.JLabel lblKepemilikan;
     private javax.swing.JTable tableView;
+    private javax.swing.JComboBox<String> txtKategori;
+    private javax.swing.JComboBox<String> txtKepemilikan;
     private com.toedter.calendar.JDateChooser txtTanggalAkhir;
     private com.toedter.calendar.JDateChooser txtTanggalAwal;
     // End of variables declaration//GEN-END:variables

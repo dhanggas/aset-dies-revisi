@@ -332,7 +332,7 @@ public class ServicePeminjaman implements RepoPeminjaman {
 
     @Override
     public Peminjaman update(Peminjaman value) throws SQLException {
-        String sql = "UPDATE tb_peminjaman SET open = ? WHERE id_peminjaman = ?";
+        String sql = "UPDATE tb_peminjaman SET  = ? WHERE id_peminjaman = ?";
 
         Connection connect = ds.getConnection();
         PreparedStatement ps = connect.prepareStatement(sql);
@@ -359,7 +359,7 @@ public class ServicePeminjaman implements RepoPeminjaman {
                 + "u.password,"
                 + "u.jabatan,"
                 + "u.status, "
-                + "u.approval "
+                + "p.approval "
                 + "FROM tb_peminjaman p JOIN users u ON (p.id_user = u.id_user)";
         Connection connect = ds.getConnection();
         List<Peminjaman> list = new ArrayList<>();
@@ -671,6 +671,101 @@ public class ServicePeminjaman implements RepoPeminjaman {
         rs.close();
         connect.close();
         return list;
+    }
+
+    @Override
+    public List<PeminjamanDetail> findPeminjamanByTglBetweenByKategoriByKepemilikan(Date awal, Date akhir, String kategori, String kepemilikan) throws SQLException {
+        String sql = "SELECT \n"
+                + "    b.id_peminjaman as id_peminjaman, \n"
+                + "    b.kode as kode_peminjaman,\n"
+                + "    b.pembawa as pembawa_peminjaman,\n"
+                + "    b.tanggal as tanggal_peminjaman,\n"
+                + "    b.ket as ket_peminjaman,\n"
+                + "    bd.id_peminjaman as id_peminjaman_detail,\n"
+                + "    bd.qty as jumlah_peminjaman,\n"
+                + "    ast.id_aset as id_aset,\n"
+                + "    ast.nama_aset as nama_aset,\n"
+                + "    ast.qty as stok_aset,\n"
+                + "    ast.satuan as satuan_aset,\n"
+                + "    kast.id_kategori as id_kategori_aset,\n"
+                + "    kast.kode as kode_ketegori_aset,\n"
+                + "    kast.nama_kategori as nama_kategori_aset,\n"
+                + "    c.id_kepemilikan as id_kepemilikan,\n"
+                + "    c.nama as nama_kepemilikan,\n"
+                + "    u.id_user as id_user,\n"
+                + "    u.username as username\n"
+                + "FROM tb_peminjaman b JOIN tb_peminjaman_detail bd ON (b.id_peminjaman = bd.id_peminjaman)\n"
+                + "    JOIN tb_aset ast ON (bd.id_aset = ast.id_aset)\n"
+                + "    JOIN tb_kategori kast ON (kast.id_kategori = ast.id_kategori)\n"
+                + "    JOIN tb_kepemilikan c ON (c.id_kepemilikan = ast.id_kepemilikan)\n"
+                + "    JOIN users u ON (u.id_user = b.id_user)\n"
+                + "WHERE  b.tanggal between ? AND ? \n"
+                + "AND kast.nama_kategori LIKE ? \n"
+                + "AND c.nama LIKE ? ";
+        List<PeminjamanDetail> list = new ArrayList<>();
+
+        Connection connect = ds.getConnection();
+        PreparedStatement ps = connect.prepareStatement(sql);
+        ps.setDate(1, awal);
+        ps.setDate(2, akhir);
+        ps.setString(3, kategori);
+        ps.setString(4, kepemilikan);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            PeminjamanDetail bd = new PeminjamanDetail();
+
+            Peminjaman b = new Peminjaman();
+            b.setId(rs.getInt("id_peminjaman"));
+            b.setKode(rs.getString("kode_peminjaman"));
+            b.setTanggal(rs.getDate("tanggal_peminjaman"));
+            b.setKet(rs.getString("ket_peminjaman"));
+
+            Aset ast = new Aset();
+            ast.setKode(rs.getString("id_aset"));
+            ast.setNama(rs.getString("nama_aset"));
+            ast.setSatuan(rs.getString("satuan_aset"));
+
+            KategoriAset kb = new KategoriAset();
+            kb.setId_kategori(rs.getInt("id_kategori_aset"));
+            kb.setKode(rs.getString("kode_ketegori_aset"));
+            kb.setNama_kategori(rs.getString("nama_kategori_aset"));
+
+            Kepemilikan p = new Kepemilikan();
+            p.setId_kepemilikan(rs.getInt("id_kepemilikan"));
+            p.setNama(rs.getString("nama_kepemilikan"));
+
+            Users u = new Users();
+            u.setId_user(rs.getInt("id_user"));
+            u.setUsername(rs.getString("username"));
+
+            ast.setKepemilikan(p);
+            ast.setKategoriAset(kb);
+            b.setUser(u);
+            bd.setPeminjaman(b);
+            bd.setAset(ast);
+            bd.setQty(rs.getInt("jumlah_peminjaman"));
+            list.add(bd);
+        }
+
+        ps.close();
+        rs.close();
+        connect.close();
+        return list;
+    }
+
+    @Override
+    public Peminjaman updateApproval(Peminjaman p) throws SQLException {
+        String sql = "UPDATE tb_peminjaman SET approval = ? WHERE id_peminjaman = ?";
+
+        Connection connect = ds.getConnection();
+        PreparedStatement ps = connect.prepareStatement(sql);
+        ps.setString(1, p.getApproval());
+        ps.setInt(2, p.getId());
+        ps.executeUpdate();
+
+        ps.close();
+        connect.close();
+        return p;
     }
 
 }

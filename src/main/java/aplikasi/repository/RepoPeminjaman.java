@@ -20,6 +20,8 @@ public interface RepoPeminjaman extends BaseRepository<Peminjaman, String>{
     public Peminjaman save(Peminjaman p, List<PeminjamanDetail> listPeminjaman) throws SQLException;
     
     public List<PeminjamanDetail> findPeminjamanByTglBetween(Date awal, Date akhir) throws SQLException;
+    
+    public List<PeminjamanDetail> findPeminjamanByTglBetweenByKategoriByKepemilikan(Date awal, Date akhir, String kategori, String kepemilikan) throws SQLException;
 
     public List<PeminjamanDetail> findPeminjamanDetailByPeminjamanKode(String kode) throws SQLException;
     
@@ -38,5 +40,7 @@ public interface RepoPeminjaman extends BaseRepository<Peminjaman, String>{
     public void deletePeminjamanDetail(List<PeminjamanDetail> listPeminjaman) throws SQLException;
     
     public List<Peminjaman> findPeminjamanByStatus() throws SQLException;
+    
+    public Peminjaman updateApproval(Peminjaman p) throws SQLException;
 
 }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 15, 2019 at 11:48 AM
+-- Generation Time: Oct 16, 2019 at 10:50 AM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -50,10 +50,10 @@ CREATE TABLE IF NOT EXISTS `tb_aset` (
 --
 
 INSERT INTO `tb_aset` (`id_aset`, `nama_aset`, `tanggal`, `id_kategori`, `id_status`, `id_lokasi`, `id_kepemilikan`, `qty`, `satuan`, `id_user`) VALUES
-('MD-0001', 'RING PLATE 21 - 11086-0', '2019-10-15', 25, 3, 3, 6, 0, 'UNIT', 1),
-('MD-0002', 'RING PLATE 21 - 12138-0', '2019-10-15', 25, 3, 3, 6, 0, 'UNIT', 1),
-('MD-0003', 'RING PLATE 28 - 19801-0', '2019-10-15', 25, 3, 3, 6, 0, 'UNIT', 1),
-('MD-0004', 'RING PLATE 28 - 19801-0', '2019-10-15', 25, 3, 3, 6, 0, 'UNIT', 1),
+('MD-0001', 'RING PLATE 21 - 11086-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
+('MD-0002', 'RING PLATE 21 - 12138-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
+('MD-0003', 'RING PLATE 28 - 19801-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
+('MD-0004', 'RING PLATE 28 - 19801-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
 ('MD-0005', 'RING PLATE 21 - 10000-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
 ('MD-0006', 'RETAINER 45932 - 370', '2019-10-15', 25, 2, 3, 6, 1, 'UNIT', 1),
 ('MD-0007', 'INNER BUSH 47901-432', '2019-10-15', 10, 3, 33, 6, 1, 'UNIT', 4),
@@ -554,14 +554,7 @@ CREATE TABLE IF NOT EXISTS `tb_peminjaman` (
   `approval` varchar(10) DEFAULT '',
   PRIMARY KEY (`id_peminjaman`),
   KEY `fk_pinjam_user` (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `tb_peminjaman`
---
-
-INSERT INTO `tb_peminjaman` (`id_peminjaman`, `kode`, `pembawa`, `tanggal`, `ket`, `open`, `id_user`, `approval`) VALUES
-(4, 'PMJ-191015-001', 'Ahmad', '2019-10-15', 'Kembali ke customer', 1, 4, 'Diterima');
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -577,17 +570,7 @@ CREATE TABLE IF NOT EXISTS `tb_peminjaman_detail` (
   PRIMARY KEY (`id`),
   KEY `fk_beli_detai_aset` (`id_aset`),
   KEY `fk_pinjam_detai_pinjam` (`id_peminjaman`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
-
---
--- Dumping data for table `tb_peminjaman_detail`
---
-
-INSERT INTO `tb_peminjaman_detail` (`id`, `id_peminjaman`, `id_aset`, `qty`) VALUES
-(5, 4, 'MD-0001', 1),
-(6, 4, 'MD-0002', 1),
-(7, 4, 'MD-0003', 1),
-(8, 4, 'MD-0004', 1);
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
 
 -- --------------------------------------------------------
 
@@ -605,7 +588,7 @@ CREATE TABLE IF NOT EXISTS `tb_pengembalian` (
   `id_peminjaman` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_pengembalian`),
   KEY `fk_balik_user` (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -621,7 +604,7 @@ CREATE TABLE IF NOT EXISTS `tb_pengembalian_detail` (
   PRIMARY KEY (`id`),
   KEY `fk_balik_detail_balik` (`id_pengembalian`),
   KEY `fk_balik_detail_aset` (`id_aset`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -669,7 +652,7 @@ INSERT INTO `users` (`id_user`, `nama`, `username`, `password`, `jabatan`, `stat
 (1, 'Dhiskar', 'dhiskar', 'Admin1', 'Kepala', 1),
 (2, 'Panji', 'panji', 'Gudang1', 'Gudang', 1),
 (3, 'Jepy', 'jepy', 'Kasir1', 'Kasir', 1),
-(4, 'Toni Saputra', 'toni', 'Admin2', 'Admin', 1);
+(4, 'Toni Saputraa', 'toni', 'Admin2', 'Admin', 1);
 
 -- --------------------------------------------------------
 

@@ -50,7 +50,6 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
     private List<Pengembalian> daftarPengembalian = new ArrayList<>();
     private List<PengembalianDetail> daftarPengembalianDetail = new ArrayList<>();
 
-
     /**
      * Creates new form LaporanPenambahan
      *
@@ -62,8 +61,10 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         this.tableController = new TableViewController(tableView);
         this.tableControllerDetail = new TableViewController(tableViewDetail);
         this.tableController.setContentTableAlignment(Arrays.asList(0, 1));
-        this.tableControllerDetail.setContentTableAlignment( Arrays.asList(0, 2, 3));
+        this.tableControllerDetail.setContentTableAlignment(Arrays.asList(0, 2, 3));
         this.p = p;
+        refreshDataTablesPeminjaman();
+        jPanel1.setVisible(false);
     }
 
     /**
@@ -76,7 +77,8 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
-        pmnuHapus = new javax.swing.JMenuItem();
+        pmnuApproval = new javax.swing.JMenuItem();
+        pmnuTolak = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         cboTransaksi = new javax.swing.JComboBox();
@@ -96,22 +98,29 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         lblOpen = new javax.swing.JLabel();
         txtKet = new javax.swing.JTextField();
         txtOpen = new javax.swing.JTextField();
+        txtApproval = new javax.swing.JTextField();
+        btnTolak = new javax.swing.JButton();
+        btnTerima = new javax.swing.JButton();
 
-        pmnuHapus.setText("Hapus Data");
-        pmnuHapus.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pmnuHapusMouseClicked(evt);
-            }
-        });
-        pmnuHapus.addActionListener(new java.awt.event.ActionListener() {
+        pmnuApproval.setText("Setujui Transaksi");
+        pmnuApproval.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pmnuHapusActionPerformed(evt);
+                pmnuApprovalActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(pmnuHapus);
+        jPopupMenu1.add(pmnuApproval);
+
+        pmnuTolak.setText("Tolak Transaksi");
+        pmnuTolak.setActionCommand("Tolak Transaksi");
+        pmnuTolak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pmnuTolakActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(pmnuTolak);
 
         setBorder(javax.swing.BorderFactory.createMatteBorder(5, 5, 5, 5, new java.awt.Color(99, 130, 203)));
-        setTitle("Approval Transaksi");
+        setTitle("Approval Transaksi Peminjaman");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setPreferredSize(new java.awt.Dimension(721, 52));
@@ -172,7 +181,7 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tableView.setToolTipText("Klik kanan untuk memunculkan menu");
+        tableView.setToolTipText("");
         tableView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableViewMouseClicked(evt);
@@ -243,6 +252,33 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
 
         txtOpen.setEditable(false);
 
+        txtApproval.setEditable(false);
+        txtApproval.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txtApproval.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtApproval.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtApprovalCaretUpdate(evt);
+            }
+        });
+
+        btnTolak.setText("Tolak");
+        btnTolak.setEnabled(false);
+        btnTolak.setFocusPainted(false);
+        btnTolak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTolakActionPerformed(evt);
+            }
+        });
+
+        btnTerima.setText("Terima");
+        btnTerima.setEnabled(false);
+        btnTerima.setFocusPainted(false);
+        btnTerima.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTerimaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -257,35 +293,48 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
                     .addComponent(txtPembawa, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                     .addComponent(txtUser))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblKet)
-                    .addComponent(lblOpen))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblOpen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblKet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtKet, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtOpen, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(txtOpen, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtApproval)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnTerima, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTolak, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(btnTerima, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnTolak, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPembawa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtKet, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                             .addComponent(lblKet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblOpen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtOpen)
-                            .addComponent(lblOpen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(txtApproval))))
                 .addGap(3, 3, 3))
         );
 
@@ -293,15 +342,17 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
-            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(96, 96, 96))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.CENTER);
@@ -315,7 +366,7 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
             tableController.clearData();
             this.daftarPeminjaman = repoPeminjaman.findAll();
             for (Peminjaman pn : daftarPeminjaman) {
-                Object[] row = {pn.getKode(),ValueFormatter.getLocalDateShort(pn.getTanggal().toLocalDate()),pn.getApproval()};
+                Object[] row = {pn.getKode(), ValueFormatter.getLocalDateShort(pn.getTanggal().toLocalDate()), pn.getApproval()};
                 tableController.getModel().addRow(row);
             }
         } catch (SQLException ex) {
@@ -346,7 +397,7 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
                 Aset aset = detailKembali.getAset();
                 KategoriAset kategori = aset.getKategoriAset();
                 Object[] row = {
-//                    detailKembali.getId(),
+                    //                    detailKembali.getId(),
                     aset.getKode(),
                     aset.getNama(),
                     kategori.getNama_kategori(),
@@ -372,7 +423,7 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
                 Aset aset = detailPinjam.getAset();
                 KategoriAset kategori = aset.getKategoriAset();
                 Object[] row = {
-//                    detailPinjam.getId(),
+                    //                    detailPinjam.getId(),
                     aset.getKode(),
                     aset.getNama(),
                     kategori.getNama_kategori(),
@@ -383,15 +434,17 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
             txtPembawa.setText(pinjam.getPembawa());
             txtUser.setText(pinjam.getUser().getNama());
             txtKet.setText(pinjam.getKet());
+            txtApproval.setText(pinjam.getApproval());
             lblOpen.setVisible(true);
             txtOpen.setVisible(true);
             if (pinjam.isOpen()) {
-            txtOpen.setText("OPEN");
-            txtOpen.setForeground(Color.red);
+                txtOpen.setText("OPEN");
+                txtOpen.setForeground(Color.red);
             } else {
-            txtOpen.setText("CLOSE");
-            txtOpen.setForeground(Color.black);
+                txtOpen.setText("CLOSE");
+                txtOpen.setForeground(Color.black);
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(ApprovalTransaksi.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -402,6 +455,11 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
                 case 1:
                     Peminjaman peminjaman = daftarPeminjaman.get(tableController.getRowSelected());
                     setFields(peminjaman);
+                    if (txtApproval.getText().isEmpty()) {
+                        btnApprovalEnable();
+                    } else {
+                        btnApprovalDisable();
+                    }
                     break;
                 case 2:
                     Pengembalian pengembalian = daftarPengembalian.get(tableController.getRowSelected());
@@ -430,25 +488,22 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
                 refreshDataTablesPeminjaman();
                 System.out.println("tampil defauld");
         }
-        
+
         txtPembawa.setText("");
         txtUser.setText("");
         txtKet.setText("");
         txtOpen.setText("");
     }//GEN-LAST:event_cboTransaksiItemStateChanged
 
-    private void pmnuHapusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pmnuHapusMouseClicked
-    }//GEN-LAST:event_pmnuHapusMouseClicked
-
-    private void pmnuHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmnuHapusActionPerformed
+    private void pmnuApprovalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmnuApprovalActionPerformed
         if (tableController.isSelected()) {
             switch (jenisTransaksi) {
                 case 1:
-                    hapusTransaksiPeminjaman();
+                    terimaTransaksiPeminjaman();
                     refreshDataTablesPeminjaman();
                     break;
                 case 2:
-                    hapusTransaksiPengembalian();
+//                    hapusTransaksiPengembalian();
                     refreshDataTablesPengembalian();
                     break;
                 default:
@@ -456,21 +511,69 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
                     System.out.println("jenis transakssi null");
                     break;
             }
-    }//GEN-LAST:event_pmnuHapusActionPerformed
+    }//GEN-LAST:event_pmnuApprovalActionPerformed
     }
     private void tableViewMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableViewMouseReleased
-        if (evt.isPopupTrigger()) {
-            JTable source = (JTable) evt.getSource();
-            int row = source.rowAtPoint(evt.getPoint());
-            int column = source.columnAtPoint(evt.getPoint());
-            if (!source.isRowSelected(row)) {
-                source.changeSelection(row, column, false, false);
-            }
-            jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
-        }        
+//        if (evt.isPopupTrigger()) {
+//            JTable source = (JTable) evt.getSource();
+//            int row = source.rowAtPoint(evt.getPoint());
+//            int column = source.columnAtPoint(evt.getPoint());
+//            if (!source.isRowSelected(row)) {
+//                source.changeSelection(row, column, false, false);
+//            }
+//            jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
+//        }
     }//GEN-LAST:event_tableViewMouseReleased
-    
+
+    private void pmnuTolakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmnuTolakActionPerformed
+        if (tableController.isSelected()) {
+            switch (jenisTransaksi) {
+                case 1:
+                    tolakTransaksiPeminjaman();
+                    refreshDataTablesPeminjaman();
+                    break;
+                case 2:
+//                    hapusTransaksiPengembalian();
+                    refreshDataTablesPengembalian();
+                    break;
+                default:
+                    refreshDataTablesPeminjaman();
+                    System.out.println("jenis transakssi null");
+                    break;
+            }
+    }//GEN-LAST:event_pmnuTolakActionPerformed
+    }
+    private void btnApprovalEnable(){
+            btnTerima.setEnabled(true);
+            btnTolak.setEnabled(true);
+    }
+    private void btnApprovalDisable(){
+            btnTerima.setEnabled(false);
+            btnTolak.setEnabled(false);
+    }
+    private void txtApprovalCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtApprovalCaretUpdate
+     if (txtApproval.getText().isEmpty()) {
+            btnApprovalEnable();
+        } else {
+            btnApprovalDisable();
+        }
+    }//GEN-LAST:event_txtApprovalCaretUpdate
+
+    private void btnTolakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTolakActionPerformed
+        hapusTransaksiPeminjaman();
+        refreshDataTablesPeminjaman();
+        clearField();
+    }//GEN-LAST:event_btnTolakActionPerformed
+
+    private void btnTerimaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerimaActionPerformed
+        terimaTransaksiPeminjaman();
+        refreshDataTablesPeminjaman();
+        btnApprovalDisable();
+    }//GEN-LAST:event_btnTerimaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTerima;
+    private javax.swing.JButton btnTolak;
     private javax.swing.JComboBox cboTransaksi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -485,32 +588,20 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblKet;
     private javax.swing.JLabel lblOpen;
-    private javax.swing.JMenuItem pmnuHapus;
+    private javax.swing.JMenuItem pmnuApproval;
+    private javax.swing.JMenuItem pmnuTolak;
     private javax.swing.JTable tableView;
     private javax.swing.JTable tableViewDetail;
+    private javax.swing.JTextField txtApproval;
     private javax.swing.JTextField txtKet;
     private javax.swing.JTextField txtOpen;
     private javax.swing.JTextField txtPembawa;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 
-    private void hapusTransaksiPengembalian() {
-        Pengembalian a = daftarPengembalian.get(tableController.getRowSelected());
-        int jawab = JOptionPane.showOptionDialog(this, "Ingin Menghaspus data dengan kode " + a.getKode() + " ?", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-        if (jawab == JOptionPane.YES_OPTION) {
-            try {
-                repoPengembalian.deletePengembalianDetail(daftarPengembalianDetail);
-                repoPengembalian.updateStatusPeminjaman(a);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "Tidak dapat menghapus data aset", getTitle(), JOptionPane.ERROR_MESSAGE);
-                Logger.getLogger(ApprovalTransaksi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        tableControllerDetail.clearData();
-    }
     private void hapusTransaksiPeminjaman() {
         Peminjaman a = daftarPeminjaman.get(tableController.getRowSelected());
-        int jawab = JOptionPane.showOptionDialog(this, "Ingin Menghaspus data dengan kode " + a.getKode() + " ?", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        int jawab = JOptionPane.showOptionDialog(this, "Data transaksi yang di tolak akan dihapus, Kode Transasksi : " + a.getKode() + " ?", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
         if (jawab == JOptionPane.YES_OPTION) {
             try {
                 repoPeminjaman.deletePeminjamanDetail(daftarPeminjamanDetail);
@@ -523,11 +614,42 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         tableControllerDetail.clearData();
     }
 
+    private void terimaTransaksiPeminjaman() {
+        Peminjaman a = daftarPeminjaman.get(tableController.getRowSelected());
+        int jawab = JOptionPane.showOptionDialog(this, "Terima Transaksi dengan kode " + a.getKode() + " ?", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if (jawab == JOptionPane.YES_OPTION) {
+            try {
+                a.setApproval("Diterima");
+                repoPeminjaman.updateApproval(a);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Tidak dapat menerima data aset", getTitle(), JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(ApprovalTransaksi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        tableControllerDetail.clearData();
+    }
+
+    private void tolakTransaksiPeminjaman() {
+        Peminjaman a = daftarPeminjaman.get(tableController.getRowSelected());
+        int jawab = JOptionPane.showOptionDialog(this, "Tolak Transaksi dengan kode " + a.getKode() + " ? /n Untuk transaksi yang di tolak data akan dihapus", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if (jawab == JOptionPane.YES_OPTION) {
+            try {
+                a.setApproval("Ditolak");
+                repoPeminjaman.updateApproval(a);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Tidak dapat menolak data aset", getTitle(), JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(ApprovalTransaksi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        tableControllerDetail.clearData();
+    }
+
     private void clearField() {
         txtPembawa.setText("");
         txtUser.setText("");
         txtKet.setText("");
         txtOpen.setText("");
+        txtApproval.setText("");
     }
 
 }
