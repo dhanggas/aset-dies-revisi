@@ -39,6 +39,8 @@ public interface RepoPeminjaman extends BaseRepository<Peminjaman, String>{
     
     public void deletePeminjamanDetail(List<PeminjamanDetail> listPeminjaman) throws SQLException;
     
+    public void updatePeminjamanDetail(List<PeminjamanDetail> listPeminjaman) throws SQLException;
+    
     public List<Peminjaman> findPeminjamanByStatus() throws SQLException;
     
     public Peminjaman updateApproval(Peminjaman p) throws SQLException;

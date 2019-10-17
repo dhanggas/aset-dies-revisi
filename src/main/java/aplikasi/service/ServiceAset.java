@@ -338,7 +338,7 @@ public class ServiceAset implements RepoAset {
                 + "AND lokasi_aset LIKE ? \n"
                 + "AND nama_kepemilikan LIKE ? \n"
                 + "AND quantity >=? and quantity <= ? \n"
-                + "AND username LIKE ? ";
+                + "AND username LIKE ? order by kode_aset asc ";
 
         Connection connect = ds.getConnection();
         PreparedStatement ps = connect.prepareStatement(sql);

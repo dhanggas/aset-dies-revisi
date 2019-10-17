@@ -101,7 +101,7 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         txtOpen = new javax.swing.JTextField();
         txtApproval = new javax.swing.JTextField();
         btnTolak = new javax.swing.JButton();
-        btnTerima = new javax.swing.JButton();
+        btnSetuju = new javax.swing.JButton();
 
         pmnuApproval.setText("Setujui Transaksi");
         pmnuApproval.addActionListener(new java.awt.event.ActionListener() {
@@ -112,7 +112,6 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         jPopupMenu1.add(pmnuApproval);
 
         pmnuTolak.setText("Tolak Transaksi");
-        pmnuTolak.setActionCommand("Tolak Transaksi");
         pmnuTolak.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pmnuTolakActionPerformed(evt);
@@ -273,12 +272,12 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
             }
         });
 
-        btnTerima.setText("Terima");
-        btnTerima.setEnabled(false);
-        btnTerima.setFocusPainted(false);
-        btnTerima.addActionListener(new java.awt.event.ActionListener() {
+        btnSetuju.setText("Setuju");
+        btnSetuju.setEnabled(false);
+        btnSetuju.setFocusPainted(false);
+        btnSetuju.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTerimaActionPerformed(evt);
+                btnSetujuActionPerformed(evt);
             }
         });
 
@@ -308,7 +307,7 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
                         .addComponent(txtApproval)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnTerima, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSetuju, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnTolak, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -317,9 +316,9 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(btnTerima, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSetuju, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnTolak, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                        .addComponent(btnTolak, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPembawa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -376,7 +375,7 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
             Logger.getLogger(LaporanAset.class.getName()).log(Level.SEVERE, null, ex);
         }
         tableController.setContentTableAlignment(Arrays.asList(0, 1, 2));
-        clearField();
+//        clearField();
 
     }
 
@@ -391,7 +390,7 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(LaporanAset.class.getName()).log(Level.SEVERE, null, ex);
         }
-        clearField();
+//        clearField();
     }
 
     private void setFields(Pengembalian kembali) {
@@ -556,12 +555,12 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
     }
 
     private void btnApprovalEnable() {
-        btnTerima.setEnabled(true);
+        btnSetuju.setEnabled(true);
         btnTolak.setEnabled(true);
     }
 
     private void btnApprovalDisable() {
-        btnTerima.setEnabled(false);
+        btnSetuju.setEnabled(false);
         btnTolak.setEnabled(false);
     }
     private void txtApprovalCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtApprovalCaretUpdate
@@ -574,18 +573,15 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
 
     private void btnTolakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTolakActionPerformed
         hapusTransaksiPeminjaman();
-        refreshDataTablesPeminjaman();
-        clearField();
+//            tolakTransaksiPeminjaman();
     }//GEN-LAST:event_btnTolakActionPerformed
 
-    private void btnTerimaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerimaActionPerformed
+    private void btnSetujuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetujuActionPerformed
         terimaTransaksiPeminjaman();
-        refreshDataTablesPeminjaman();
-        btnApprovalDisable();
-    }//GEN-LAST:event_btnTerimaActionPerformed
+    }//GEN-LAST:event_btnSetujuActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnTerima;
+    private javax.swing.JButton btnSetuju;
     private javax.swing.JButton btnTolak;
     private javax.swing.JComboBox cboTransaksi;
     private javax.swing.JLabel jLabel1;
@@ -618,43 +614,51 @@ public final class ApprovalTransaksi extends javax.swing.JInternalFrame {
         if (jawab == JOptionPane.YES_OPTION) {
             try {
                 repoPeminjaman.deletePeminjamanDetail(daftarPeminjamanDetail);
-
+                refreshDataTablesPeminjaman();
+                tableControllerDetail.clearData();
+                btnApprovalDisable();
+                clearField();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Tidak dapat menghapus data aset", getTitle(), JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(ApprovalTransaksi.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        tableControllerDetail.clearData();
     }
 
     private void terimaTransaksiPeminjaman() {
         Peminjaman a = daftarPeminjaman.get(tableController.getRowSelected());
-        int jawab = JOptionPane.showOptionDialog(this, "Terima Transaksi dengan kode " + a.getKode() + " ?", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        int jawab = JOptionPane.showOptionDialog(this, "Setujui Transaksi dengan kode " + a.getKode() + " ?", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
         if (jawab == JOptionPane.YES_OPTION) {
             try {
-                a.setApproval("Diterima");
+                a.setApproval("Disetujui");
                 repoPeminjaman.updateApproval(a);
+                refreshDataTablesPeminjaman();
+                btnApprovalDisable();
+                txtApproval.setText("Disetujui");
+//              tableControllerDetail.clearData();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Tidak dapat menerima data aset", getTitle(), JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(ApprovalTransaksi.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        tableControllerDetail.clearData();
     }
 
     private void tolakTransaksiPeminjaman() {
         Peminjaman a = daftarPeminjaman.get(tableController.getRowSelected());
-        int jawab = JOptionPane.showOptionDialog(this, "Tolak Transaksi dengan kode " + a.getKode() + " ? /n Untuk transaksi yang di tolak data akan dihapus", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        int jawab = JOptionPane.showOptionDialog(this, "Tolak Transaksi, Kode Transasksi : " + a.getKode() + " ?", getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
         if (jawab == JOptionPane.YES_OPTION) {
             try {
-                a.setApproval("Ditolak");
-                repoPeminjaman.updateApproval(a);
+                repoPeminjaman.updatePeminjamanDetail(daftarPeminjamanDetail);
+                refreshDataTablesPeminjaman();
+//                    tableControllerDetail.clearData();
+                btnApprovalDisable();
+//                   clearField();
+                txtApproval.setText("Ditolak");
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "Tidak dapat menolak data aset", getTitle(), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Tidak dapat menghapus data aset", getTitle(), JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(ApprovalTransaksi.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        tableControllerDetail.clearData();
     }
 
     private void clearField() {

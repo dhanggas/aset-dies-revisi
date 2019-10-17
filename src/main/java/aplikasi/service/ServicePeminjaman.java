@@ -768,4 +768,40 @@ public class ServicePeminjaman implements RepoPeminjaman {
         return p;
     }
 
+    @Override
+    public void updatePeminjamanDetail(List<PeminjamanDetail> listPeminjaman) throws SQLException {
+//        String sql = "DELETE FROM tb_peminjaman_detail WHERE id_peminjaman = ?";
+        Connection connect = ds.getConnection();
+//        for (PeminjamanDetail pd : listPeminjaman) {
+//            ps.setInt(1, pd.getPeminjaman().getId());
+//        }
+//        ps.executeUpdate();
+//        ps.close();
+
+        String sql = "UPDATE tb_peminjaman SET approval = ? WHERE id_peminjaman = ?";
+        connect = ds.getConnection();
+        PreparedStatement ps = connect.prepareStatement(sql);
+        for (PeminjamanDetail pd : listPeminjaman) {
+            ps.setString(1, "Ditolak");
+            ps.setInt(2, pd.getPeminjaman().getId());
+        }
+        ps.executeUpdate();
+        ps.close();
+
+        sql = "UPDATE tb_aset SET qty = ? WHERE id_aset = ?";
+        ps = connect.prepareStatement(sql);
+        for (PeminjamanDetail pd : listPeminjaman) {
+            Aset aset = pd.getAset();
+            Integer stokSekarang = aset.getQty();
+            ps.setInt(1, stokSekarang + pd.getQty());
+            ps.setString(2, aset.getKode());
+            ps.addBatch();
+        }
+
+        ps.executeBatch();
+        ps.clearBatch();
+        ps.close();
+        connect.close();
+    }
+
 }
