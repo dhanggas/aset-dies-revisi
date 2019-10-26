@@ -1,20 +1,22 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.5
--- http://www.phpmyadmin.net
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 16, 2019 at 10:50 AM
--- Server version: 5.5.16
--- PHP Version: 5.3.8
+-- Waktu pembuatan: 26 Okt 2019 pada 03.37
+-- Versi server: 10.1.35-MariaDB
+-- Versi PHP: 7.2.9
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `dbaset2`
@@ -23,10 +25,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_aset`
+-- Struktur dari tabel `tb_aset`
 --
 
-CREATE TABLE IF NOT EXISTS `tb_aset` (
+CREATE TABLE `tb_aset` (
   `id_aset` varchar(10) NOT NULL,
   `nama_aset` varchar(50) NOT NULL,
   `tanggal` date NOT NULL,
@@ -36,22 +38,16 @@ CREATE TABLE IF NOT EXISTS `tb_aset` (
   `id_kepemilikan` int(3) NOT NULL,
   `qty` int(1) NOT NULL DEFAULT '1',
   `satuan` varchar(30) NOT NULL,
-  `id_user` int(3) NOT NULL,
-  PRIMARY KEY (`id_aset`),
-  KEY `fk_aset_kategori` (`id_kategori`) USING BTREE,
-  KEY `fk_aset_status` (`id_status`) USING BTREE,
-  KEY `fk_aset_lokasi` (`id_lokasi`) USING BTREE,
-  KEY `fk_aset_customer` (`id_kepemilikan`) USING BTREE,
-  KEY `fk_aset_user` (`id_user`)
+  `id_user` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tb_aset`
+-- Dumping data untuk tabel `tb_aset`
 --
 
 INSERT INTO `tb_aset` (`id_aset`, `nama_aset`, `tanggal`, `id_kategori`, `id_status`, `id_lokasi`, `id_kepemilikan`, `qty`, `satuan`, `id_user`) VALUES
-('MD-0001', 'RING PLATE 21 - 11086-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
-('MD-0002', 'RING PLATE 21 - 12138-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
+('MD-0001', 'RING PLATE 21 - 11086-0', '2019-10-15', 25, 3, 3, 6, 0, 'UNIT', 1),
+('MD-0002', 'RING PLATE 21 - 12138-0', '2019-10-15', 25, 3, 3, 6, 0, 'UNIT', 1),
 ('MD-0003', 'RING PLATE 28 - 19801-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
 ('MD-0004', 'RING PLATE 28 - 19801-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
 ('MD-0005', 'RING PLATE 21 - 10000-0', '2019-10-15', 25, 3, 3, 6, 1, 'UNIT', 1),
@@ -395,18 +391,17 @@ INSERT INTO `tb_aset` (`id_aset`, `nama_aset`, `tanggal`, `id_kategori`, `id_sta
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_kategori`
+-- Struktur dari tabel `tb_kategori`
 --
 
-CREATE TABLE IF NOT EXISTS `tb_kategori` (
-  `id_kategori` int(3) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tb_kategori` (
+  `id_kategori` int(3) NOT NULL,
   `kode` varchar(4) NOT NULL,
-  `nama_kategori` varchar(30) NOT NULL,
-  PRIMARY KEY (`id_kategori`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+  `nama_kategori` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tb_kategori`
+-- Dumping data untuk tabel `tb_kategori`
 --
 
 INSERT INTO `tb_kategori` (`id_kategori`, `kode`, `nama_kategori`) VALUES
@@ -445,20 +440,19 @@ INSERT INTO `tb_kategori` (`id_kategori`, `kode`, `nama_kategori`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_kepemilikan`
+-- Struktur dari tabel `tb_kepemilikan`
 --
 
-CREATE TABLE IF NOT EXISTS `tb_kepemilikan` (
-  `id_kepemilikan` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tb_kepemilikan` (
+  `id_kepemilikan` int(11) NOT NULL,
   `nama` varchar(40) NOT NULL,
   `tlp` varchar(12) NOT NULL,
   `alamat` varchar(300) NOT NULL,
-  `ket` varchar(300) NOT NULL,
-  PRIMARY KEY (`id_kepemilikan`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+  `ket` varchar(300) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tb_kepemilikan`
+-- Dumping data untuk tabel `tb_kepemilikan`
 --
 
 INSERT INTO `tb_kepemilikan` (`id_kepemilikan`, `nama`, `tlp`, `alamat`, `ket`) VALUES
@@ -483,18 +477,17 @@ INSERT INTO `tb_kepemilikan` (`id_kepemilikan`, `nama`, `tlp`, `alamat`, `ket`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_lokasi`
+-- Struktur dari tabel `tb_lokasi`
 --
 
-CREATE TABLE IF NOT EXISTS `tb_lokasi` (
-  `id_lokasi` int(3) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tb_lokasi` (
+  `id_lokasi` int(3) NOT NULL,
   `nama_rak` varchar(10) NOT NULL,
-  `lokasi` varchar(10) NOT NULL,
-  PRIMARY KEY (`id_lokasi`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+  `lokasi` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tb_lokasi`
+-- Dumping data untuk tabel `tb_lokasi`
 --
 
 INSERT INTO `tb_lokasi` (`id_lokasi`, `nama_rak`, `lokasi`) VALUES
@@ -540,86 +533,90 @@ INSERT INTO `tb_lokasi` (`id_lokasi`, `nama_rak`, `lokasi`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_peminjaman`
+-- Struktur dari tabel `tb_peminjaman`
 --
 
-CREATE TABLE IF NOT EXISTS `tb_peminjaman` (
-  `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tb_peminjaman` (
+  `id_peminjaman` int(11) NOT NULL,
   `kode` varchar(20) NOT NULL,
   `pembawa` varchar(30) NOT NULL,
   `tanggal` date NOT NULL,
   `ket` varchar(300) NOT NULL,
   `open` tinyint(1) NOT NULL DEFAULT '1',
   `id_user` int(3) NOT NULL,
-  `approval` varchar(10) DEFAULT '',
-  PRIMARY KEY (`id_peminjaman`),
-  KEY `fk_pinjam_user` (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+  `approval` varchar(10) DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_peminjaman`
+--
+
+INSERT INTO `tb_peminjaman` (`id_peminjaman`, `kode`, `pembawa`, `tanggal`, `ket`, `open`, `id_user`, `approval`) VALUES
+(8, 'PMJ-191017-001', 'sartu', '2019-10-17', 'satuu', 1, 4, 'Disetujui');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_peminjaman_detail`
+-- Struktur dari tabel `tb_peminjaman_detail`
 --
 
-CREATE TABLE IF NOT EXISTS `tb_peminjaman_detail` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tb_peminjaman_detail` (
+  `id` int(11) NOT NULL,
   `id_peminjaman` int(11) NOT NULL,
   `id_aset` varchar(10) NOT NULL,
-  `qty` int(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_beli_detai_aset` (`id_aset`),
-  KEY `fk_pinjam_detai_pinjam` (`id_peminjaman`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+  `qty` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_peminjaman_detail`
+--
+
+INSERT INTO `tb_peminjaman_detail` (`id`, `id_peminjaman`, `id_aset`, `qty`) VALUES
+(17, 8, 'MD-0001', 1),
+(18, 8, 'MD-0002', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_pengembalian`
+-- Struktur dari tabel `tb_pengembalian`
 --
 
-CREATE TABLE IF NOT EXISTS `tb_pengembalian` (
-  `id_pengembalian` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tb_pengembalian` (
+  `id_pengembalian` int(11) NOT NULL,
   `kode` varchar(20) NOT NULL,
   `pembawa` varchar(30) NOT NULL,
   `tanggal` date NOT NULL,
   `ket` varchar(300) NOT NULL,
   `id_user` int(3) NOT NULL,
-  `id_peminjaman` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_pengembalian`),
-  KEY `fk_balik_user` (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `id_peminjaman` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_pengembalian_detail`
+-- Struktur dari tabel `tb_pengembalian_detail`
 --
 
-CREATE TABLE IF NOT EXISTS `tb_pengembalian_detail` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tb_pengembalian_detail` (
+  `id` int(11) NOT NULL,
   `id_pengembalian` int(11) NOT NULL,
   `id_aset` varchar(10) NOT NULL,
-  `qty` int(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_balik_detail_balik` (`id_pengembalian`),
-  KEY `fk_balik_detail_aset` (`id_aset`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+  `qty` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_status`
+-- Struktur dari tabel `tb_status`
 --
 
-CREATE TABLE IF NOT EXISTS `tb_status` (
+CREATE TABLE `tb_status` (
   `id_status` int(3) NOT NULL,
-  `status` varchar(30) NOT NULL,
-  PRIMARY KEY (`id_status`)
+  `status` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tb_status`
+-- Dumping data untuk tabel `tb_status`
 --
 
 INSERT INTO `tb_status` (`id_status`, `status`) VALUES
@@ -630,22 +627,20 @@ INSERT INTO `tb_status` (`id_status`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktur dari tabel `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `id_user` int(3) NOT NULL,
   `nama` varchar(30) NOT NULL,
   `username` varchar(8) NOT NULL,
   `password` varchar(8) NOT NULL,
   `jabatan` enum('Admin','Gudang','Kasir','Kepala') NOT NULL,
-  `status` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id_user`),
-  UNIQUE KEY `uniq_username` (`username`)
+  `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `users`
+-- Dumping data untuk tabel `users`
 --
 
 INSERT INTO `users` (`id_user`, `nama`, `username`, `password`, `jabatan`, `status`) VALUES
@@ -657,9 +652,10 @@ INSERT INTO `users` (`id_user`, `nama`, `username`, `password`, `jabatan`, `stat
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `v_aset`
+-- Stand-in struktur untuk tampilan `v_aset`
+-- (Lihat di bawah untuk tampilan aktual)
 --
-CREATE TABLE IF NOT EXISTS `v_aset` (
+CREATE TABLE `v_aset` (
 `kode_aset` varchar(10)
 ,`tanggal` date
 ,`nama_aset` varchar(50)
@@ -685,21 +681,144 @@ CREATE TABLE IF NOT EXISTS `v_aset` (
 ,`jabatan_user` enum('Admin','Gudang','Kasir','Kepala')
 ,`status_user` tinyint(1)
 );
+
 -- --------------------------------------------------------
 
 --
--- Structure for view `v_aset`
+-- Struktur untuk view `v_aset`
 --
 DROP TABLE IF EXISTS `v_aset`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_aset` AS select `tb_aset`.`id_aset` AS `kode_aset`,`tb_aset`.`tanggal` AS `tanggal`,`tb_aset`.`nama_aset` AS `nama_aset`,`tb_kategori`.`id_kategori` AS `id_kategori`,`tb_kategori`.`kode` AS `kode_kategori`,`tb_kategori`.`nama_kategori` AS `nama_kategori`,`tb_status`.`id_status` AS `id_status`,`tb_status`.`status` AS `status_aset`,`tb_lokasi`.`id_lokasi` AS `id_lokasi`,`tb_lokasi`.`nama_rak` AS `nama_rak`,`tb_lokasi`.`lokasi` AS `lokasi_aset`,`tb_kepemilikan`.`id_kepemilikan` AS `id_kepemilikan`,`tb_kepemilikan`.`nama` AS `nama_kepemilikan`,`tb_kepemilikan`.`tlp` AS `tlp_kepemilikan`,`tb_kepemilikan`.`alamat` AS `alamat_kepemilikan`,`tb_kepemilikan`.`ket` AS `ket_kepemilikan`,`tb_aset`.`qty` AS `quantity`,`tb_aset`.`satuan` AS `satuan`,`users`.`id_user` AS `id_user`,`users`.`nama` AS `nama_user`,`users`.`username` AS `username`,`users`.`password` AS `password`,`users`.`jabatan` AS `jabatan_user`,`users`.`status` AS `status_user` from (((((`tb_aset` left join `tb_kategori` on((`tb_aset`.`id_kategori` = `tb_kategori`.`id_kategori`))) left join `tb_status` on((`tb_aset`.`id_status` = `tb_status`.`id_status`))) left join `tb_lokasi` on((`tb_aset`.`id_lokasi` = `tb_lokasi`.`id_lokasi`))) left join `tb_kepemilikan` on((`tb_aset`.`id_kepemilikan` = `tb_kepemilikan`.`id_kepemilikan`))) left join `users` on((`tb_aset`.`id_user` = `users`.`id_user`)));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_aset`  AS  select `tb_aset`.`id_aset` AS `kode_aset`,`tb_aset`.`tanggal` AS `tanggal`,`tb_aset`.`nama_aset` AS `nama_aset`,`tb_kategori`.`id_kategori` AS `id_kategori`,`tb_kategori`.`kode` AS `kode_kategori`,`tb_kategori`.`nama_kategori` AS `nama_kategori`,`tb_status`.`id_status` AS `id_status`,`tb_status`.`status` AS `status_aset`,`tb_lokasi`.`id_lokasi` AS `id_lokasi`,`tb_lokasi`.`nama_rak` AS `nama_rak`,`tb_lokasi`.`lokasi` AS `lokasi_aset`,`tb_kepemilikan`.`id_kepemilikan` AS `id_kepemilikan`,`tb_kepemilikan`.`nama` AS `nama_kepemilikan`,`tb_kepemilikan`.`tlp` AS `tlp_kepemilikan`,`tb_kepemilikan`.`alamat` AS `alamat_kepemilikan`,`tb_kepemilikan`.`ket` AS `ket_kepemilikan`,`tb_aset`.`qty` AS `quantity`,`tb_aset`.`satuan` AS `satuan`,`users`.`id_user` AS `id_user`,`users`.`nama` AS `nama_user`,`users`.`username` AS `username`,`users`.`password` AS `password`,`users`.`jabatan` AS `jabatan_user`,`users`.`status` AS `status_user` from (((((`tb_aset` left join `tb_kategori` on((`tb_aset`.`id_kategori` = `tb_kategori`.`id_kategori`))) left join `tb_status` on((`tb_aset`.`id_status` = `tb_status`.`id_status`))) left join `tb_lokasi` on((`tb_aset`.`id_lokasi` = `tb_lokasi`.`id_lokasi`))) left join `tb_kepemilikan` on((`tb_aset`.`id_kepemilikan` = `tb_kepemilikan`.`id_kepemilikan`))) left join `users` on((`tb_aset`.`id_user` = `users`.`id_user`))) ;
 
 --
--- Constraints for dumped tables
+-- Indexes for dumped tables
 --
 
 --
--- Constraints for table `tb_aset`
+-- Indeks untuk tabel `tb_aset`
+--
+ALTER TABLE `tb_aset`
+  ADD PRIMARY KEY (`id_aset`),
+  ADD KEY `fk_aset_kategori` (`id_kategori`) USING BTREE,
+  ADD KEY `fk_aset_status` (`id_status`) USING BTREE,
+  ADD KEY `fk_aset_lokasi` (`id_lokasi`) USING BTREE,
+  ADD KEY `fk_aset_customer` (`id_kepemilikan`) USING BTREE,
+  ADD KEY `fk_aset_user` (`id_user`);
+
+--
+-- Indeks untuk tabel `tb_kategori`
+--
+ALTER TABLE `tb_kategori`
+  ADD PRIMARY KEY (`id_kategori`);
+
+--
+-- Indeks untuk tabel `tb_kepemilikan`
+--
+ALTER TABLE `tb_kepemilikan`
+  ADD PRIMARY KEY (`id_kepemilikan`);
+
+--
+-- Indeks untuk tabel `tb_lokasi`
+--
+ALTER TABLE `tb_lokasi`
+  ADD PRIMARY KEY (`id_lokasi`);
+
+--
+-- Indeks untuk tabel `tb_peminjaman`
+--
+ALTER TABLE `tb_peminjaman`
+  ADD PRIMARY KEY (`id_peminjaman`),
+  ADD KEY `fk_pinjam_user` (`id_user`);
+
+--
+-- Indeks untuk tabel `tb_peminjaman_detail`
+--
+ALTER TABLE `tb_peminjaman_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_beli_detai_aset` (`id_aset`),
+  ADD KEY `fk_pinjam_detai_pinjam` (`id_peminjaman`) USING BTREE;
+
+--
+-- Indeks untuk tabel `tb_pengembalian`
+--
+ALTER TABLE `tb_pengembalian`
+  ADD PRIMARY KEY (`id_pengembalian`),
+  ADD KEY `fk_balik_user` (`id_user`);
+
+--
+-- Indeks untuk tabel `tb_pengembalian_detail`
+--
+ALTER TABLE `tb_pengembalian_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_balik_detail_balik` (`id_pengembalian`),
+  ADD KEY `fk_balik_detail_aset` (`id_aset`) USING BTREE;
+
+--
+-- Indeks untuk tabel `tb_status`
+--
+ALTER TABLE `tb_status`
+  ADD PRIMARY KEY (`id_status`);
+
+--
+-- Indeks untuk tabel `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id_user`),
+  ADD UNIQUE KEY `uniq_username` (`username`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_kategori`
+--
+ALTER TABLE `tb_kategori`
+  MODIFY `id_kategori` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_kepemilikan`
+--
+ALTER TABLE `tb_kepemilikan`
+  MODIFY `id_kepemilikan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_lokasi`
+--
+ALTER TABLE `tb_lokasi`
+  MODIFY `id_lokasi` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_peminjaman`
+--
+ALTER TABLE `tb_peminjaman`
+  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_peminjaman_detail`
+--
+ALTER TABLE `tb_peminjaman_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_pengembalian`
+--
+ALTER TABLE `tb_pengembalian`
+  MODIFY `id_pengembalian` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_pengembalian_detail`
+--
+ALTER TABLE `tb_pengembalian_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `tb_aset`
 --
 ALTER TABLE `tb_aset`
   ADD CONSTRAINT `tb_aset_ibfk_1` FOREIGN KEY (`id_kategori`) REFERENCES `tb_kategori` (`id_kategori`),
@@ -709,30 +828,31 @@ ALTER TABLE `tb_aset`
   ADD CONSTRAINT `tb_aset_ibfk_6` FOREIGN KEY (`id_kepemilikan`) REFERENCES `tb_kepemilikan` (`id_kepemilikan`);
 
 --
--- Constraints for table `tb_peminjaman`
+-- Ketidakleluasaan untuk tabel `tb_peminjaman`
 --
 ALTER TABLE `tb_peminjaman`
   ADD CONSTRAINT `tb_peminjaman_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`);
 
 --
--- Constraints for table `tb_peminjaman_detail`
+-- Ketidakleluasaan untuk tabel `tb_peminjaman_detail`
 --
 ALTER TABLE `tb_peminjaman_detail`
   ADD CONSTRAINT `tb_peminjaman_detail_ibfk_2` FOREIGN KEY (`id_aset`) REFERENCES `tb_aset` (`id_aset`),
   ADD CONSTRAINT `tb_peminjaman_detail_ibfk_3` FOREIGN KEY (`id_peminjaman`) REFERENCES `tb_peminjaman` (`id_peminjaman`);
 
 --
--- Constraints for table `tb_pengembalian`
+-- Ketidakleluasaan untuk tabel `tb_pengembalian`
 --
 ALTER TABLE `tb_pengembalian`
   ADD CONSTRAINT `tb_pengembalian_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`);
 
 --
--- Constraints for table `tb_pengembalian_detail`
+-- Ketidakleluasaan untuk tabel `tb_pengembalian_detail`
 --
 ALTER TABLE `tb_pengembalian_detail`
   ADD CONSTRAINT `tb_pengembalian_detail_ibfk_2` FOREIGN KEY (`id_aset`) REFERENCES `tb_aset` (`id_aset`),
   ADD CONSTRAINT `tb_pengembalian_detail_ibfk_3` FOREIGN KEY (`id_pengembalian`) REFERENCES `tb_pengembalian` (`id_pengembalian`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
